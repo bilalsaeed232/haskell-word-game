@@ -36,10 +36,14 @@ getLines :: Grid -> [String]
 getLines grid = 
     let horizontal = grid
         vertical = transpose grid
-        diagonal1 = transpose $ skew horizontal '*'
-        diagonal2 = transpose (skew (map reverse horizontal) '#')
+        diagonal1 = diagonalize horizontal 
+        diagonal2 = diagonalize (map reverse horizontal) 
         lines = horizontal ++ vertical ++ diagonal1 ++ diagonal2
     in lines ++ (map reverse lines)
+
+
+diagonalize :: Grid -> Grid
+diagonalize grid = transpose $ skew grid '*'
 
 findWord :: Grid -> String -> Maybe String
 findWord grid word = 
