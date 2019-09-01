@@ -4,6 +4,7 @@ module Lib
     ,languages
     ,outputGrid
     ,formatGrid
+    ,skew
     ,findWordInLine
     ,findWord
     ,findWords
@@ -22,6 +23,13 @@ outputGrid grid = putStrLn $ formatGrid grid
 
 formatGrid :: Grid -> String
 formatGrid = unlines
+
+
+
+skew :: Grid -> Char -> Grid
+skew [] sym = []
+skew (l:ls) sym = l : skew (map indent ls) sym
+  where indent line = sym : line
 
 
 getLines :: Grid -> [String]
