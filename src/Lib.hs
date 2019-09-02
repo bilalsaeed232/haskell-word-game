@@ -1,8 +1,8 @@
 module Lib
     ( 
     findWords
-    ,findWordInLine
     ,findWord
+    ,findWordInLine
     ,outputGrid
     ,formatGrid
     ,getLines
