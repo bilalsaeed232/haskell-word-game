@@ -16,6 +16,7 @@ import Data.Char (toUpper)
 import Data.Maybe (catMaybes)
 
 type Grid = [String]
+skewSymbol = '^'
 
 outputGrid :: Grid -> IO()
 outputGrid grid = putStrLn $ formatGrid grid
@@ -26,10 +27,10 @@ formatGrid = unlines
 
 
 
-skew :: Grid -> Char -> Grid
-skew [] sym = []
-skew (l:ls) sym = l : skew (map indent ls) sym
-  where indent line = sym : line
+skew :: Grid -> Grid
+skew [] = []
+skew (l:ls) = l : skew (map indent ls)
+  where indent line = skewSymbol : line
 
 
 getLines :: Grid -> [String]
@@ -43,7 +44,7 @@ getLines grid =
 
 
 diagonalize :: Grid -> Grid
-diagonalize grid = transpose $ skew grid '*'
+diagonalize grid = (transpose . skew) grid
 
 findWord :: Grid -> String -> Maybe String
 findWord grid word = 
