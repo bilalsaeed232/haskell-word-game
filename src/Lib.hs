@@ -44,7 +44,7 @@ getLines grid =
 
 
 diagonalize :: Grid -> Grid
-diagonalize grid = (transpose . skew) grid
+diagonalize  = transpose . skew 
 
 findWord :: Grid -> String -> Maybe String
 findWord grid word = 
