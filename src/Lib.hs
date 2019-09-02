@@ -1,39 +1,51 @@
 module Lib
     ( 
-    grid
-    ,languages
-    ,outputGrid
-    ,formatGrid
-    ,skew
+    findWords
     ,findWordInLine
     ,findWord
-    ,findWords
+    ,outputGrid
+    ,formatGrid
     ,getLines
+    ,skew
+    ,diagonalize
     ) where
 
+-- User Defined modules
 import Data
 
+-- HASKELL modules
 import Data.List (transpose, isInfixOf)
 import Data.Char (toUpper)
 import Data.Maybe (catMaybes)
 
-type Grid = [String]
-skewSymbol = '^'
+-- Types
+type Grid = [String] -- more readable code by defining symbols like this
+skewSymbol = '^' -- global variable used in skew function
 
+
+
+-- Application Logic functions
+findWords :: Grid -> [String] -> [String]
+findWords grid words = 
+    let foundWords = map (findWord grid) words
+    in catMaybes foundWords
+
+findWord :: Grid -> String -> Maybe String
+findWord grid word = 
+  let lines = getLines grid
+      found = or $ map (findWordInLine $ map toUpper word) lines
+  in if found then Just word else Nothing
+
+findWordInLine :: String -> String -> Bool
+findWordInLine word line = word `isInfixOf` line
+
+
+-- Helper functions
 outputGrid :: Grid -> IO()
 outputGrid grid = putStrLn $ formatGrid grid
 
-
 formatGrid :: Grid -> String
 formatGrid = unlines
-
-
-
-skew :: Grid -> Grid
-skew [] = []
-skew (l:ls) = l : skew (map indent ls)
-  where indent line = skewSymbol : line
-
 
 getLines :: Grid -> [String]
 getLines grid = 
@@ -44,21 +56,10 @@ getLines grid =
         lines = horizontal ++ vertical ++ diagonal1 ++ diagonal2
     in lines ++ (map reverse lines)
 
+skew :: Grid -> Grid
+skew [] = []
+skew (l:ls) = l : skew (map indent ls)
+    where indent line = skewSymbol : line
 
 diagonalize :: Grid -> Grid
 diagonalize  = transpose . skew 
-
-findWord :: Grid -> String -> Maybe String
-findWord grid word = 
-  let lines = getLines grid
-      found = or $ map (findWordInLine $ map toUpper word) lines
-  in if found then Just word else Nothing
-
-findWords :: Grid -> [String] -> [String]
-findWords grid words = 
-    let foundWords = map (findWord grid) words
-    in catMaybes foundWords
-
-findWordInLine :: String -> String -> Bool
-findWordInLine word line = word `isInfixOf` line
-

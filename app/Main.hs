@@ -1,12 +1,16 @@
 module Main where
 
+-- Custom Modules
+import Data
 import Lib
+
+-- Haskell Modules
 import Data.List
 
 main :: IO ()
 main = do
-  putStrLn "Running word game...."
-  putStrLn "<<<<<LANGUAGES>>>>>"
+  putStrLn "\n\nRunning word game...."
+  putStrLn "\n<<<<<LANGUAGES>>>>>"
   print languages
-  putStrLn "<<<<<FORMATEED GRID>>>>>"
-  outputGrid $ getLines grid
+  putStrLn "\n\n<<<<<GRID>>>>>"
+  outputGrid grid
